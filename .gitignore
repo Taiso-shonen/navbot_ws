@@ -1,0 +1,26 @@
+# ROS 2 build artifacts
+/build/
+/install/
+/log/
+
+# Python virtual environments
+.venv/
+
+# VSCode settings
+.vscode/
+
+# System/OS files
+.DS_Store
+Thumbs.db
+
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# CMake cache
+CMakeCache.txt
+CMakeFiles/
+cmake_install.cmake
+Makefile
