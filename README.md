@@ -37,13 +37,13 @@ colcon build
 
 - launch file: slam.launch.py
 - description: launches my_navbot_gazebo.launch.py together with slam_toolbox. Can be used with teleop twist keyboard to move the robot. A map saver service is available with a Trigger interface.
-- arguments: use_sim_time(default is True), map_name
+- arguments: use_sim_time(default is True), map_name, world
 
 - launch file: auto_slam.launch.py
 - description: used to map an unknown environment autonomously. After reaching a certain percentage of mapping it auto-saves the map.
-- arguments: use_sim_time(default is True), map_name, params_file(for navigation, can modify the default one located in the config) 
+- arguments: use_sim_time(default is True), map_name, world, params_file(for navigation, can modify the default one located in the config) 
 
 - launch file: nav.launch.py
 - description: navigates to predefined checkpoints provided as waypoints.
-- arguments: map, set_initial_pose(bool default to true), waypoints(yaml file containing waypoints), params_file(for navigation, can modify the default one located in the config)
+- arguments: map, world, set_initial_pose(bool default to true), waypoints(yaml file containing waypoints), params_file(for navigation, can modify the default one located in the config)
 

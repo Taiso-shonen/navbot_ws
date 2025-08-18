@@ -10,6 +10,7 @@ def generate_launch_description():
     use_sim_time = 'true'
     rviz_config = os.path.join(get_package_share_path('my_navbot_description'), 'rviz', 'nav2_default_view.rviz')
     map_path = os.path.join(get_package_share_path('my_navbot_bringup'), 'maps', 'test_map.yaml')
+    world_path = os.path.join(get_package_share_path('my_navbot_bringup'), 'worlds', 'test_world.sdf')
     waypoints_path = os.path.join(get_package_share_path('my_navbot_tools'), 'config', 'waypoints.yaml')
     params_file_path = os.path.join(get_package_share_path('my_navbot_bringup'), 'config', 'nav_params.yaml')
 
@@ -17,6 +18,12 @@ def generate_launch_description():
         'map',
         default_value=map_path,
         description='Path to map'
+    )
+
+    declare_world_arg = DeclareLaunchArgument(
+        'world',
+        default_value=world_path,
+        description='Path to world'
     )
 
     declare_initial_pose_arg = DeclareLaunchArgument(
@@ -38,6 +45,7 @@ def generate_launch_description():
     )
 
     map = LaunchConfiguration('map')
+    world = LaunchConfiguration('world')
     set_initial_pose = LaunchConfiguration('set_initial_pose')
     waypoints = LaunchConfiguration('waypoints')
     params_file = LaunchConfiguration('params_file')
@@ -49,7 +57,7 @@ def generate_launch_description():
 
     nav2_bringup_launch = IncludeLaunchDescription(
         os.path.join(get_package_share_path('nav2_bringup'), 'launch', 'bringup_launch.py'),
-        launch_arguments={'use_sim_time': use_sim_time, 'map': map, 'params_file': params_file}.items()
+        launch_arguments={'use_sim_time': use_sim_time, 'map': map, 'world': world, 'params_file': params_file}.items()
     )
 
     delayed_bringup = TimerAction(
@@ -72,6 +80,7 @@ def generate_launch_description():
     ld = LaunchDescription()
 
     ld.add_action(declare_map_arg)
+    ld.add_action(declare_world_arg)
     ld.add_action(declare_initial_pose_arg)
     ld.add_action(declare_waypoints_arg)
     ld.add_action(declare_params_file_arg)

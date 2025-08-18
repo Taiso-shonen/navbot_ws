@@ -8,6 +8,7 @@ from ament_index_python.packages import get_package_share_path
 def generate_launch_description():
 
     params_file_path = os.path.join(get_package_share_path('my_navbot_bringup'), 'config', 'auto_nav_params.yaml')
+    world_path = os.path.join(get_package_share_path('my_navbot_bringup'), 'worlds', 'test_world.sdf')
 
     declare_use_sim_time_arg = DeclareLaunchArgument(
         'use_sim_time',
@@ -20,6 +21,12 @@ def generate_launch_description():
         default_value='my_map'
     )
 
+    declare_world_arg = DeclareLaunchArgument(
+        'world',
+        default_value=world_path,
+        description='Path to world'
+    )
+
     declare_params_file_arg = DeclareLaunchArgument(
         'params_file',
         default_value=params_file_path,
@@ -28,11 +35,12 @@ def generate_launch_description():
 
     use_sim_time = LaunchConfiguration('use_sim_time')
     map_name = LaunchConfiguration('map_name')
+    world = LaunchConfiguration('world')
     params_file = LaunchConfiguration('params_file')
 
     my_slam_launch = IncludeLaunchDescription(
         os.path.join(get_package_share_path('my_navbot_bringup'), 'launch', 'slam.launch.py'),
-        launch_arguments={'map_name': map_name}.items()
+        launch_arguments={'map_name': map_name, 'world': world}.items()
     )
 
     nav2_bringup_launch = IncludeLaunchDescription(
@@ -54,6 +62,7 @@ def generate_launch_description():
 
     ld.add_action(declare_use_sim_time_arg)
     ld.add_action(declare_map_name_arg)
+    ld.add_action(declare_world_arg)
     ld.add_action(declare_params_file_arg)
     ld.add_action(my_slam_launch)
     ld.add_action(nav2_bringup_launch)

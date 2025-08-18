@@ -9,7 +9,7 @@ from ament_index_python.packages import get_package_share_path
 def generate_launch_description():
 
     rviz_config = os.path.join(get_package_share_path('my_navbot_description'), 'rviz', 'navbot_slam_config.rviz')
-    world = os.path.join(get_package_share_path('my_navbot_bringup'), 'worlds', 'test_world.sdf')
+    world_path = os.path.join(get_package_share_path('my_navbot_bringup'), 'worlds', 'test_world.sdf')
 
     declare_use_sim_time_arg = DeclareLaunchArgument(
         'use_sim_time',
@@ -22,8 +22,15 @@ def generate_launch_description():
         default_value='my_map'
     )
 
+    declare_world_arg = DeclareLaunchArgument(
+        'world',
+        default_value=world_path,
+        description='Path to world'
+    )
+
     use_sim_time = LaunchConfiguration('use_sim_time')
     map_name = LaunchConfiguration('map_name')
+    world = LaunchConfiguration('world')
 
     my_navbot_gazebo_launch = IncludeLaunchDescription(
         os.path.join(get_package_share_path('my_navbot_bringup'), 'launch', 'my_navbot_gazebo.launch.py'),
@@ -50,6 +57,7 @@ def generate_launch_description():
 
     ld.add_action(declare_use_sim_time_arg)
     ld.add_action(declare_map_name_arg)
+    ld.add_action(declare_world_arg)
     ld.add_action(my_navbot_gazebo_launch)
     ld.add_action(slam_toolbox_launch)
     ld.add_action(nav2_map_saver_launch)
